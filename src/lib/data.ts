@@ -12,7 +12,7 @@ export interface Item {
   confidence: number;
   source: string;
   status: ItemStatus;
-  flag?: string;
+  flag?: string | undefined;
 }
 export interface Correction { item: string; prev: string; next: string; user: string; ts: string; reason: string; synthetic?: boolean }
 export interface Case {
@@ -78,7 +78,7 @@ const iso = (minsAgo: number) => new Date(Date.now() - minsAgo * 60000).toISOStr
 function seedCase(n: number, descriptor: string, complaint: string, unit: string, eta: string, status: CaseStatus, hs: HospitalStatus, mins: number, dest = DESTINATIONS[n % 3]): Case {
   const items = extractedItems().map((i) => (i.flag ? { ...i, value: "0.4 mg, sublingual", status: "corrected" as const } : { ...i, status: "confirmed" as const }));
   return {
-    id: `FN-2026-0000${80 + n}`, descriptor, age: "", sex: "", complaint, unit, eta, destination: dest, status, hospitalStatus: hs,
+    id: `FN-2026-0000${80 + n}`, descriptor, age: "", sex: "", complaint, unit, eta, destination: dest ?? DESTINATIONS[0]!, status, hospitalStatus: hs,
     createdAt: iso(mins), updatedAt: iso(mins - 5),
     transcript: [{ t: hhmmss(new Date(Date.now() - mins * 60000)), text: `${descriptor}, ${complaint.toLowerCase()}.` }],
     items: status === "needs_review" ? extractedItems() : items,
