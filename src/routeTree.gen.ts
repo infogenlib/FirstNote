@@ -10,33 +10,135 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as HospitalRouteImport } from './routes/hospital'
+import { Route as HospitalIndexRouteImport } from './routes/hospital.index'
+import { Route as HospitalAllRouteImport } from './routes/hospital.all'
+import { Route as HospitalLogRouteImport } from './routes/hospital.log'
+import { Route as ResponderIndexRouteImport } from './routes/responder.index'
+import { Route as ResponderCaseRouteImport } from './routes/responder.case'
+import { Route as HospitalCaseIdRouteImport } from './routes/hospital.case.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HospitalRoute = HospitalRouteImport.update({
+  id: '/hospital',
+  path: '/hospital',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HospitalIndexRoute = HospitalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HospitalRoute,
+} as any)
+const HospitalAllRoute = HospitalAllRouteImport.update({
+  id: '/all',
+  path: '/all',
+  getParentRoute: () => HospitalRoute,
+} as any)
+const HospitalLogRoute = HospitalLogRouteImport.update({
+  id: '/log',
+  path: '/log',
+  getParentRoute: () => HospitalRoute,
+} as any)
+const ResponderIndexRoute = ResponderIndexRouteImport.update({
+  id: '/responder/',
+  path: '/responder/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResponderCaseRoute = ResponderCaseRouteImport.update({
+  id: '/responder/case',
+  path: '/responder/case',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HospitalCaseIdRoute = HospitalCaseIdRouteImport.update({
+  id: '/case/$id',
+  path: '/case/$id',
+  getParentRoute: () => HospitalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/hospital': typeof HospitalRouteWithChildren
+  '/hospital/all': typeof HospitalAllRoute
+  '/hospital/log': typeof HospitalLogRoute
+  '/responder/case': typeof ResponderCaseRoute
+  '/hospital/': typeof HospitalIndexRoute
+  '/responder/': typeof ResponderIndexRoute
+  '/hospital/case/$id': typeof HospitalCaseIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/hospital/all': typeof HospitalAllRoute
+  '/hospital/log': typeof HospitalLogRoute
+  '/responder/case': typeof ResponderCaseRoute
+  '/hospital': typeof HospitalIndexRoute
+  '/responder': typeof ResponderIndexRoute
+  '/hospital/case/$id': typeof HospitalCaseIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/hospital': typeof HospitalRouteWithChildren
+  '/hospital/all': typeof HospitalAllRoute
+  '/hospital/log': typeof HospitalLogRoute
+  '/responder/case': typeof ResponderCaseRoute
+  '/hospital/': typeof HospitalIndexRoute
+  '/responder/': typeof ResponderIndexRoute
+  '/hospital/case/$id': typeof HospitalCaseIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/hospital'
+    | '/hospital/all'
+    | '/hospital/log'
+    | '/responder/case'
+    | '/hospital/'
+    | '/responder/'
+    | '/hospital/case/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/hospital/all'
+    | '/hospital/log'
+    | '/responder/case'
+    | '/hospital'
+    | '/responder'
+    | '/hospital/case/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/hospital'
+    | '/hospital/all'
+    | '/hospital/log'
+    | '/responder/case'
+    | '/hospital/'
+    | '/responder/'
+    | '/hospital/case/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  HospitalRoute: typeof HospitalRouteWithChildren
+  ResponderCaseRoute: typeof ResponderCaseRoute
+  ResponderIndexRoute: typeof ResponderIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +150,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hospital': {
+      id: '/hospital'
+      path: '/hospital'
+      fullPath: '/hospital'
+      preLoaderRoute: typeof HospitalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hospital/': {
+      id: '/hospital/'
+      path: '/'
+      fullPath: '/hospital/'
+      preLoaderRoute: typeof HospitalIndexRouteImport
+      parentRoute: typeof HospitalRoute
+    }
+    '/hospital/all': {
+      id: '/hospital/all'
+      path: '/all'
+      fullPath: '/hospital/all'
+      preLoaderRoute: typeof HospitalAllRouteImport
+      parentRoute: typeof HospitalRoute
+    }
+    '/hospital/log': {
+      id: '/hospital/log'
+      path: '/log'
+      fullPath: '/hospital/log'
+      preLoaderRoute: typeof HospitalLogRouteImport
+      parentRoute: typeof HospitalRoute
+    }
+    '/responder/': {
+      id: '/responder/'
+      path: '/responder'
+      fullPath: '/responder/'
+      preLoaderRoute: typeof ResponderIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/responder/case': {
+      id: '/responder/case'
+      path: '/responder/case'
+      fullPath: '/responder/case'
+      preLoaderRoute: typeof ResponderCaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hospital/case/$id': {
+      id: '/hospital/case/$id'
+      path: '/case/$id'
+      fullPath: '/hospital/case/$id'
+      preLoaderRoute: typeof HospitalCaseIdRouteImport
+      parentRoute: typeof HospitalRoute
+    }
   }
 }
 
+interface HospitalRouteChildren {
+  HospitalAllRoute: typeof HospitalAllRoute
+  HospitalLogRoute: typeof HospitalLogRoute
+  HospitalIndexRoute: typeof HospitalIndexRoute
+  HospitalCaseIdRoute: typeof HospitalCaseIdRoute
+}
+
+const HospitalRouteChildren: HospitalRouteChildren = {
+  HospitalAllRoute: HospitalAllRoute,
+  HospitalLogRoute: HospitalLogRoute,
+  HospitalIndexRoute: HospitalIndexRoute,
+  HospitalCaseIdRoute: HospitalCaseIdRoute,
+}
+
+const HospitalRouteWithChildren = HospitalRoute._addFileChildren(
+  HospitalRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  HospitalRoute: HospitalRouteWithChildren,
+  ResponderCaseRoute: ResponderCaseRoute,
+  ResponderIndexRoute: ResponderIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
